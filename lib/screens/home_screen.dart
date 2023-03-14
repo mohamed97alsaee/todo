@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:to_do_app/detailes_screen.dart';
-import 'package:to_do_app/task_model.dart';
+import 'package:to_do_app/models/task_model.dart';
+import 'package:to_do_app/widgets/task_card.dart';
+
+import 'detailes_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -131,68 +133,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ListView.builder(
                         itemCount: tasks.length,
                         itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) => DetailsScreen(
-                                            taskModel: tasks[index],
-                                          )));
+                          return TaskCard(
+                            taskModel: tasks[index],
+                            onChanged: () {
+                              setState(() {
+                                tasks[index].isDone = !tasks[index].isDone;
+                                completedTasks.add(tasks[index]);
+                                tasks.remove(tasks[index]);
+                              });
                             },
-                            child: ListTile(
-                              title: Text(tasks[index].title),
-                              subtitle: Text(tasks[index]
-                                  .createdAt
-                                  .toString()
-                                  .substring(0, 10)
-                                  .replaceAll('-', '/')),
-                              trailing: Checkbox(
-                                  value: tasks[index].isDone,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      tasks[index].isDone =
-                                          !tasks[index].isDone;
-                                      completedTasks.add(tasks[index]);
-                                      tasks.remove(tasks[index]);
-                                    });
-                                  }),
-                            ),
                           );
                         })),
                 Center(
                     child: ListView.builder(
                         itemCount: completedTasks.length,
                         itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) => DetailsScreen(
-                                            taskModel: completedTasks[index],
-                                          )));
-                            },
-                            child: ListTile(
-                              title: Text(completedTasks[index].title),
-                              subtitle: Text(completedTasks[index]
-                                  .createdAt
-                                  .toString()
-                                  .substring(0, 10)
-                                  .replaceAll('-', '/')),
-                              trailing: Checkbox(
-                                  value: completedTasks[index].isDone,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      completedTasks[index].isDone =
-                                          !completedTasks[index].isDone;
-                                      tasks.add(completedTasks[index]);
-                                      completedTasks
-                                          .remove(completedTasks[index]);
-                                    });
-                                  }),
-                            ),
-                          );
+                          return TaskCard(
+                              taskModel: completedTasks[index],
+                              onChanged: () {
+                                setState(() {
+                                  completedTasks[index].isDone =
+                                      !completedTasks[index].isDone;
+                                  tasks.add(completedTasks[index]);
+                                  completedTasks.remove(completedTasks[index]);
+                                });
+                              });
                         })),
               ]),
             )

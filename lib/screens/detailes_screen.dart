@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:to_do_app/task_model.dart';
+import 'package:to_do_app/models/task_model.dart';
 
 class DetailsScreen extends StatefulWidget {
   const DetailsScreen({super.key, required this.taskModel});
