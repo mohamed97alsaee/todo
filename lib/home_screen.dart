@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const TabBar(tabs: [
               Tab(
-                text: 'WAITING',
+                text: 'Waiting Tasks',
               ),
               Tab(
                 text: 'Done Tasks',
